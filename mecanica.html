@@ -490,6 +490,34 @@
                 </p>
             </div>
         </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #90caf9;">
+            <strong>CARTMAN</strong> - Proyecto Universitario de Innovación Tecnológica
+        </p>
+        <p style="color: #b3d9ff;">
+            Desarrollado con pasión por estudiantes comprometidos con la tecnología del futuro
+        </p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>>
 
         <!-- Diseño CAD -->
         <section class="section">
