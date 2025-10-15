@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Diseño - CARTMAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2f4a 100%);
+            color: #e0e7ff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(25, 118, 210, 0.3) 100%);
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #64b5f6;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .content-box:hover {
+            border-color: #64b5f6;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+        }
+
+        .content-box h3 {
+            color: #90caf9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-box p {
+            line-height: 1.8;
+            color: #b3d9ff;
+            margin-bottom: 1rem;
+        }
+
+        .content-box ul {
+            margin-left: 2rem;
+            line-height: 1.8;
+            color: #b3d9ff;
+        }
+
+        .content-box ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #1976d2, #42a5f5);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: rgba(25, 118, 210, 0.15);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: #64b5f6;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3);
+        }
+
+        .timeline-content h3 {
+            color: #64b5f6;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .timeline-content p {
+            line-height: 1.6;
+            color: #b3d9ff;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: #42a5f5;
+            border: 4px solid #0a1929;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            box-shadow: 0 0 20px rgba(66, 165, 245, 0.6);
+        }
+
+        .phase-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card h4 {
+            color: #90caf9;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            line-height: 1.6;
+            color: #b3d9ff;
+        }
+
+        /* Image placeholder */
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: rgba(25, 118, 210, 0.15);
+            border: 2px dashed rgba(66, 165, 245, 0.4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid rgba(66, 165, 245, 0.3);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                padding-left: 50px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">CARTMAN</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link active">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">📐 Proceso de Diseño</h1>
+        <p class="page-subtitle">
+            Conoce el recorrido completo desde la conceptualización hasta la implementación del proyecto CARTMAN
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="section-title">Introducción</h2>
+            <div class="content-box">
+                <p>
+                    El desarrollo de CARTMAN siguió una metodología sistemática de ingeniería que garantiza 
+                    la calidad y funcionalidad del producto final. Desde la identificación de necesidades hasta 
+                    las pruebas finales, cada fase fue cuidadosamente planificada y ejecutada.
+                </p>
+                <p>
+                    Este proceso iterativo permitió optimizar el diseño, resolver desafíos técnicos y lograr 
+                    un sistema robusto que cumple con los objetivos planteados.
+                </p>
+            </div>
+        </section>
+
+        <!-- Metodología -->
+        <section class="section">
+            <h2 class="section-title">Metodología de Diseño</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h4>Enfoque Sistemático</h4>
+                    <p>
+                        Aplicación de principios de ingeniería de sistemas para descomponer el problema 
+                        en subsistemas manejables y definir interfaces claras entre componentes.
+                    </p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔄</span>
+                    <h4>Desarrollo Iterativo</h4>
+                    <p>
+                        Ciclos de diseño-construcción-prueba que permitieron refinar continuamente 
+                        el sistema basándose en resultados experimentales y feedback.
+                    </p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h4>Validación Continua</h4>
+                    <p>
+                        Pruebas constantes en cada etapa del desarrollo para verificar el cumplimiento 
+                        de requisitos y detectar problemas tempranamente.
+                    </p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">👥</span>
+                    <h4>Trabajo Interdisciplinario</h4>
+                    <p>
+                        Colaboración entre las áreas de mecánica, electrónica, control y software 
+                        para lograr una integración efectiva del sistema completo.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline de Fases -->
+        <section class="section">
+            <h2 class="section-title">Fases del Proyecto</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 1</span>
+                        <h3>Conceptualización y Planificación</h3>
+                        <p>
+                            Definición del alcance del proyecto, objetivos específicos y restricciones. 
+                            Investigación del estado del arte, análisis de requerimientos y planificación 
+                            de recursos. Selección de tecnologías y herramientas a utilizar.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 2</span>
+                        <h3>Diseño Preliminar</h3>
+                        <p>
+                            Creación de bocetos iniciales, definición de arquitectura del sistema y 
+                            especificaciones técnicas. Modelado CAD preliminar y análisis de viabilidad. 
+                            Selección de componentes principales.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 3</span>
+                        <h3>Diseño Detallado</h3>
+                        <p>
+                            Modelado CAD completo en SolidWorks con todas las dimensiones y tolerancias. 
+                            Diseño de circuitos electrónicos, esquemáticos y PCB. Desarrollo de algoritmos 
+                            de control y planificación de software.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 4</span>
+                        <h3>Análisis y Simulación</h3>
+                        <p>
+                            Análisis por elementos finitos (FEA) para validar resistencia estructural. 
+                            Simulaciones de circuitos electrónicos. Pruebas virtuales de algoritmos de 
+                            control. Optimización basada en resultados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 5</span>
+                        <h3>Prototipado</h3>
+                        <p>
+                            Fabricación de componentes mediante impresión 3D y mecanizado. Ensamble de 
+                            PCB y componentes electrónicos. Construcción del primer prototipo funcional 
+                            para pruebas iniciales.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 6</span>
+                        <h3>Pruebas y Validación</h3>
+                        <p>
+                            Pruebas de subsistemas individuales y del sistema integrado. Validación de 
+                            requisitos funcionales y de desempeño. Identificación de problemas y áreas 
+                            de mejora. Documentación de resultados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="phase-number">Fase 7</span>
+                        <h3>Refinamiento y Optimización</h3>
+                        <p>
+                            Implementación de mejoras basadas en pruebas. Optimización de algoritmos y 
+                            ajuste de parámetros. Mejoras estructurales y de diseño. Preparación del 
+                            prototipo final.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Consideraciones de Diseño -->
+        <section class="section">
+            <h2 class="section-title">Consideraciones Clave</h2>
+            <div class="content-box">
+                <h3>🔧 Requisitos Técnicos</h3>
+                <ul>
+                    <li>Autonomía operativa mínima de X horas</li>
+                    <li>Capacidad de navegación en diversos terrenos</li>
+                    <li>Precisión en la ejecución de tareas programadas</li>
+                    <li>Sistema de comunicación robusto y confiable</li>
+                    <li>Interfaces de usuario intuitivas</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>⚠️ Restricciones y Limitaciones</h3>
+                <ul>
+                    <li>Presupuesto limitado para componentes y materiales</li>
+                    <li>Dimensiones y peso máximos definidos</li>
+                    <li>Tiempo de desarrollo acotado por cronograma académico</li>
+                    <li>Disponibilidad de equipos de fabricación</li>
+                    <li>Normativas de seguridad aplicables</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>💡 Decisiones de Diseño Importantes</h3>
+                <ul>
+                    <li>Selección de arquitectura modular para facilitar mantenimiento</li>
+                    <li>Uso de materiales ligeros pero resistentes (aluminio, plásticos técnicos)</li>
+                    <li>Implementación de sistema de control distribuido</li>
+                    <li>Adopción de estándares de comunicación inalámbrica</li>
+                    <li>Diseño orientado a la manufacturabilidad</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Herramientas Utilizadas -->
+        <section class="section">
+            <h2 class="section-title">Herramientas y Software</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <span class="card-icon">📐</span>
+                    <h4>SolidWorks</h4>
+                    <p>Diseño CAD 3D, modelado de piezas y ensambles, generación de planos técnicos y análisis FEA.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h4>Altium Designer / KiCAD</h4>
+                    <p>Diseño de esquemáticos electrónicos, layout de PCB y generación de archivos Gerber.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">💻</span>
+                    <h4>Python / C++</h4>
+                    <p>Desarrollo de software de control, algoritmos de navegación e interfaces de usuario.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h4>MATLAB / Simulink</h4>
+                    <p>Simulación de sistemas de control, análisis de datos y validación de algoritmos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería (Placeholder) -->
+        <section class="section">
+            <h2 class="section-title">Galería del Proceso</h2>
+            <div class="image-placeholder">
+                📸 Espacio para imágenes del proceso de diseño
+            </div>
+            <p style="text-align: center; color: #b3d9ff; margin-top: 1rem;">
+                Aquí puedes agregar fotos de bocetos, modelos CAD, simulaciones y etapas del desarrollo
+            </p>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #90caf9;">
+            <strong>CARTMAN</strong> - Proyecto Universitario de Innovación Tecnológica
+        </p>
+        <p style="color: #b3d9ff;">
+            Desarrollado con pasión por estudiantes comprometidos con la tecnología del futuro
+        </p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
