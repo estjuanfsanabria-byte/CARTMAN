@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control - CARTMAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2f4a 100%);
+            color: #e0e7ff;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+        }
+
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(25, 118, 210, 0.3) 100%);
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #64b5f6;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .content-box:hover {
+            border-color: #64b5f6;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+        }
+
+        .content-box h3 {
+            color: #90caf9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-box p {
+            line-height: 1.8;
+            color: #b3d9ff;
+            margin-bottom: 1rem;
+        }
+
+        .content-box ul {
+            margin-left: 2rem;
+            line-height: 1.8;
+            color: #b3d9ff;
+        }
+
+        .content-box ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .diagram-box {
+            width: 100%;
+            min-height: 350px;
+            background: rgba(25, 118, 210, 0.05);
+            border: 2px dashed rgba(66, 165, 245, 0.4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .diagram-box .icon {
+            font-size: 4rem;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .control-card {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-card:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 30px rgba(33, 150, 243, 0.3);
+        }
+
+        .control-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .control-card h4 {
+            color: #90caf9;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .control-card p {
+            color: #b3d9ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .code-box {
+            background: rgba(10, 25, 41, 0.8);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-box code {
+            color: #90caf9;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .algorithm-box {
+            background: linear-gradient(135deg, rgba(25, 118, 210, 0.15), rgba(66, 165, 245, 0.1));
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .algorithm-box h4 {
+            color: #64b5f6;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .algorithm-box ol {
+            margin-left: 2rem;
+            color: #b3d9ff;
+            line-height: 1.8;
+        }
+
+        .algorithm-box ol li {
+            margin-bottom: 0.5rem;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .download-section {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            margin: 0.5rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.6);
+            border-color: #90caf9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid rgba(66, 165, 245, 0.3);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">CARTMAN</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link active">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">🎮 Sistema de Control</h1>
+        <p class="page-subtitle">
+            Algoritmos de control, navegación autónoma y arquitectura de software del proyecto CARTMAN
+        </p>
+    </div>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">Introducción</h2>
+            <div class="content-box">
+                <p>
+                    El sistema de control de CARTMAN implementa múltiples niveles de control, desde el bajo 
+                    nivel (control de motores) hasta el alto nivel (navegación autónoma y toma de decisiones). 
+                    El software fue desarrollado utilizando una arquitectura modular que facilita el desarrollo, 
+                    pruebas y mantenimiento.
+                </p>
+                <p>
+                    Se implementaron algoritmos de control PID para estabilidad, odometría para localización, 
+                    y algoritmos de planificación de trayectorias para navegación autónoma.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Arquitectura de Control</h2>
+            <div class="diagram-box">
+                <div class="icon">🏗️</div>
+                <p>Diagrama de arquitectura de control por niveles</p>
+                <span style="font-size: 0.9rem; color: #b3d9ff;">Alto Nivel → Medio Nivel → Bajo Nivel</span>
+            </div>
+            <div class="control-grid">
+                <div class="control-card">
+                    <span class="control-icon">🎯</span>
+                    <h4>Control de Alto Nivel</h4>
+                    <p>Planificación de trayectorias, toma de decisiones y estrategias de navegación autónoma.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">⚙️</span>
+                    <h4>Control de Medio Nivel</h4>
+                    <p>Control de velocidad, odometría, fusión sensorial y control cinemático del robot.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">🔧</span>
+                    <h4>Control de Bajo Nivel</h4>
+                    <p>Control PID de motores, lectura de sensores y generación de señales PWM.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Control PID de Motores</h2>
+            <div class="content-box">
+                <h3>📊 Controlador Proporcional-Integral-Derivativo</h3>
+                <p>
+                    Se implementó un controlador PID para cada motor, permitiendo control preciso de velocidad 
+                    y compensación de perturbaciones. Los parámetros fueron ajustados mediante el método de 
+                    Ziegler-Nichols y refinados experimentalmente.
+                </p>
+            </div>
+            <div class="algorithm-box">
+                <h4>Ecuación del Controlador PID</h4>
+                <p style="color: #b3d9ff; margin: 1rem 0;">
+                    u(t) = Kp × e(t) + Ki × ∫e(t)dt + Kd × de(t)/dt
+                </p>
+                <p style="color: #b3d9ff; font-size: 0.9rem;">
+                    Donde: e(t) = error, Kp = ganancia proporcional, Ki = ganancia integral, Kd = ganancia derivativa
+                </p>
+            </div>
+            <div class="code-box">
+                <code>
+// Pseudocódigo del controlador PID<br>
+error = setpoint - medicion;<br>
+integral += error * dt;<br>
+derivativo = (error - error_anterior) / dt;<br>
+salida = Kp*error + Ki*integral + Kd*derivativo;<br>
+error_anterior = error;<br>
+                </code>
+            </div>
+            <div class="content-box">
+                <h3>⚙️ Parámetros de Ajuste</h3>
+                <ul>
+                    <li><strong>Kp (Proporcional):</strong> X.XX - Respuesta rápida al error actual</li>
+                    <li><strong>Ki (Integral):</strong> X.XX - Elimina error en estado estacionario</li>
+                    <li><strong>Kd (Derivativo):</strong> X.XX - Amortigua oscilaciones y sobrepaso</li>
+                    <li><strong>Frecuencia de muestreo:</strong> XXX Hz</li>
+                    <li><strong>Límites de saturación:</strong> ±XXX PWM</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Cinemática y Odometría</h2>
+            <div class="two-column">
+                <div class="content-box">
+                    <h3>🚗 Modelo Cinemático</h3>
+                    <p>
+                        Se implementó el modelo cinemático diferencial para un robot de 4 ruedas, 
+                        permitiendo calcular la velocidad lineal y angular en función de las velocidades 
+                        de las ruedas izquierda y derecha.
+                    </p>
+                    <div class="code-box" style="margin-top: 1rem;">
+                        <code>
+v = (v_right + v_left) / 2<br>
+ω = (v_right - v_left) / L<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <h3>📍 Odometría</h3>
+                    <p>
+                        Sistema de odometría basado en encoders para estimar la posición y orientación 
+                        del robot. Se implementó integración numérica de las ecuaciones cinemáticas.
+                    </p>
+                    <div class="code-box" style="margin-top: 1rem;">
+                        <code>
+x += v * cos(θ) * dt<br>
+y += v * sin(θ) * dt<br>
+θ += ω * dt<br>
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Navegación Autónoma</h2>
+            <div class="content-box">
+                <p>
+                    El sistema de navegación autónoma integra múltiples algoritmos para planificación de 
+                    trayectorias, detección de obstáculos y comportamientos reactivos.
+                </p>
+            </div>
+            <div class="control-grid">
+                <div class="control-card">
+                    <span class="control-icon">🗺️</span>
+                    <h4>Planificación de Trayectorias</h4>
+                    <p>Algoritmo A* o RRT para encontrar rutas óptimas entre puntos en un mapa conocido.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">👁️</span>
+                    <h4>Detección de Obstáculos</h4>
+                    <p>Fusión de sensores ultrasónicos y cámara para detección en tiempo real de obstáculos.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">🔄</span>
+                    <h4>Comportamiento Reactivo</h4>
+                    <p>Respuestas inmediatas a eventos del entorno usando máquina de estados finitos.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">🎯</span>
+                    <h4>Seguimiento de Trayectorias</h4>
+                    <p>Control de seguimiento para ejecutar las trayectorias planificadas con precisión.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Algoritmos Implementados</h2>
+            <div class="algorithm-box">
+                <h4>🔍 Algoritmo de Evitación de Obstáculos</h4>
+                <ol>
+                    <li>Leer sensores de distancia (ultrasónicos)</li>
+                    <li>Si distancia &lt; umbral_seguridad:</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;Detener movimiento hacia adelante</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;Calcular dirección libre más cercana</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;Girar hacia dirección libre</li>
+                    <li>Si no hay obstáculos:</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;Continuar con trayectoria planificada</li>
+                    <li>Actualizar mapa local de obstáculos</li>
+                </ol>
+            </div>
+
+            <div class="algorithm-box">
+                <h4>🎯 Algoritmo de Seguimiento de Línea</h4>
+                <ol>
+                    <li>Capturar imagen de cámara</li>
+                    <li>Preprocesar imagen (escala de grises, umbralización)</li>
+                    <li>Detectar línea usando algoritmo de contornos</li>
+                    <li>Calcular error lateral respecto al centro</li>
+                    <li>Aplicar controlador PID para corrección de dirección</li>
+                    <li>Ajustar velocidades de motores izquierdo/derecho</li>
+                    <li>Repetir a frecuencia de XX Hz</li>
+                </ol>
+            </div>
+
+            <div class="algorithm-box">
+                <h4>🤖 Máquina de Estados para Navegación</h4>
+                <ol>
+                    <li><strong>IDLE:</strong> Sistema en espera de comando</li>
+                    <li><strong>NAVEGANDO:</strong> Siguiendo trayectoria planificada</li>
+                    <li><strong>EVITANDO:</strong> Evadiendo obstáculo detectado</li>
+                    <li><strong>REPLANIFICANDO:</strong> Recalculando ruta al destino</li>
+                    <li><strong>DETENIDO:</strong> Obstáculo crítico o comando de parada</li>
+                    <li><strong>OBJETIVO_ALCANZADO:</strong> Llegada exitosa al destino</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Visión Artificial</h2>
+            <div class="content-box">
+                <h3>📸 Sistema de Visión por Computadora</h3>
+                <p>
+                    Se implementó procesamiento de imágenes usando OpenCV y redes neuronales convolucionales 
+                    (CNN) para reconocimiento de objetos y análisis del entorno.
+                </p>
+            </div>
+            <div class="control-grid">
+                <div class="control-card">
+                    <span class="control-icon">🔍</span>
+                    <h4>Detección de Objetos</h4>
+                    <p>CNN pre-entrenada (YOLO/MobileNet) para detectar y clasificar objetos en tiempo real.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">📏</span>
+                    <h4>Estimación de Distancia</h4>
+                    <p>Cálculo de distancia a objetos usando geometría de la cámara y tamaño conocido de objetos.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">🎨</span>
+                    <h4>Segmentación</h4>
+                    <p>Separación de regiones de interés usando algoritmos de segmentación por color y forma.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">📍</span>
+                    <h4>Tracking Visual</h4>
+                    <p>Seguimiento de objetos en movimiento frame a frame usando filtros de Kalman.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Software y Herramientas</h2>
+            <div class="content-box">
+                <h3>💻 Stack Tecnológico</h3>
+                <ul>
+                    <li><strong>Lenguaje principal:</strong> Python 3.x / C++ (para microcontrolador)</li>
+                    <li><strong>Framework de visión:</strong> OpenCV, TensorFlow Lite</li>
+                    <li><strong>Comunicación:</strong> MQTT, Socket programming, Serial</li>
+                    <li><strong>Control remoto:</strong> Tkinter / PyQt para interfaz gráfica</li>
+                    <li><strong>Simulación:</strong> Gazebo / Webots para pruebas virtuales</li>
+                    <li><strong>Versionamiento:</strong> Git / GitHub</li>
+                </ul>
+            </div>
+
+            <div class="two-column" style="margin-top: 2rem;">
+                <div class="content-box">
+                    <h3>🖥️ Software del Microcontrolador</h3>
+                    <ul>
+                        <li>Arduino IDE / PlatformIO</li>
+                        <li>FreeRTOS para multitarea</li>
+                        <li>Librerías de sensores y actuadores</li>
+                        <li>Protocolo de comunicación serial</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h3>💻 Software del PC/RPi</h3>
+                    <ul>
+                        <li>Python con NumPy, OpenCV</li>
+                        <li>Algoritmos de alto nivel</li>
+                        <li>Interfaz de usuario</li>
+                        <li>Logging y análisis de datos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Interfaz de Usuario</h2>
+            <div class="content-box">
+                <p>
+                    Se desarrolló una interfaz gráfica intuitiva que permite controlar el robot de forma 
+                    manual, configurar parámetros, visualizar telemetría en tiempo real y monitorear el 
+                    estado del sistema.
+                </p>
+            </div>
+            <div class="diagram-box">
+                <div class="icon">🖥️</div>
+                <p>Captura de pantalla de la interfaz de usuario</p>
+                <span style="font-size: 0.9rem; color: #b3d9ff;">Control manual | Visualización de sensores | Configuración</span>
+            </div>
+            <div class="control-grid">
+                <div class="control-card">
+                    <span class="control-icon">🎮</span>
+                    <h4>Panel de Control</h4>
+                    <p>Controles para movimiento manual, selección de modo autónomo/manual, botón de emergencia.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">📊</span>
+                    <h4>Telemetría en Tiempo Real</h4>
+                    <p>Gráficas de velocidad, corriente, voltaje de batería y estado de sensores.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">📹</span>
+                    <h4>Stream de Video</h4>
+                    <p>Visualización en vivo de la cámara con overlays de detección de objetos.</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">⚙️</span>
+                    <h4>Configuración</h4>
+                    <p>Ajuste de parámetros PID, velocidades máximas, umbrales de sensores.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Comunicación y Telemetría</h2>
+            <div class="content-box">
+                <h3>📡 Protocolo de Comunicación</h3>
+                <p>
+                    Se implementó un protocolo de comunicación bidireccional eficiente que permite enviar 
+                    comandos desde la interfaz de usuario y recibir datos de telemetría del robot.
+                </p>
+            </div>
+            <div class="code-box">
+                <code>
+// Estructura de paquete de datos<br>
+struct TelemetryPacket {<br>
+&nbsp;&nbsp;float velocidad_izq;<br>
+&nbsp;&nbsp;float velocidad_der;<br>
+&nbsp;&nbsp;float voltaje_bateria;<br>
+&nbsp;&nbsp;float corriente;<br>
+&nbsp;&nbsp;uint16_t distancia_sensores[4];<br>
+&nbsp;&nbsp;float posicion_x, posicion_y, orientacion;<br>
+&nbsp;&nbsp;uint8_t estado_sistema;<br>
+};<br>
+                </code>
+            </div>
+            <div class="content-box">
+                <h3>📈 Datos Transmitidos</h3>
+                <ul>
+                    <li><strong>Comandos (PC → Robot):</strong> Velocidades objetivo, modo de operación, configuración</li>
+                    <li><strong>Telemetría (Robot → PC):</strong> Estado de sensores, posición, orientación, diagnósticos</li>
+                    <li><strong>Video:</strong> Stream MJPEG o H.264 a 15-30 fps</li>
+                    <li><strong>Frecuencia de actualización:</strong> XX Hz para telemetría crítica</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Pruebas y Validación</h2>
+            <div class="content-box">
+                <h3>✅ Protocolo de Pruebas de Control</h3>
+                <ul>
+                    <li><strong>Pruebas unitarias:</strong> Validación de cada módulo de software individualmente</li>
+                    <li><strong>Pruebas de integración:</strong> Verificación de comunicación entre subsistemas</li>
+                    <li><strong>Pruebas de control PID:</strong> Respuesta escalón, tiempo de establecimiento, sobrepaso</li>
+                    <li><strong>Pruebas de navegación:</strong> Seguimiento de trayectoria, precisión de posicionamiento</li>
+                    <li><strong>Pruebas de visión:</strong> Tasa de detección, falsos positivos/negativos</li>
+                    <li><strong>Pruebas de robustez:</strong> Operación con perturbaciones y condiciones extremas</li>
+                    <li><strong>Pruebas de latencia:</strong> Tiempo de respuesta del sistema completo</li>
+                </ul>
+            </div>
+
+            <div class="control-grid">
+                <div class="control-card">
+                    <span class="control-icon">📊</span>
+                    <h4>Métricas de Desempeño</h4>
+                    <p>Error RMS en seguimiento: ±X cm<br>Tiempo de respuesta: XX ms<br>Precisión de odometría: XX%</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">✅</span>
+                    <h4>Tasa de Éxito</h4>
+                    <p>Navegación autónoma: XX%<br>Detección de obstáculos: XX%<br>Seguimiento de línea: XX%</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">⚡</span>
+                    <h4>Eficiencia</h4>
+                    <p>Uso de CPU: XX%<br>Latencia promedio: XX ms<br>Consumo energético optimizado</p>
+                </div>
+                <div class="control-card">
+                    <span class="control-icon">🛡️</span>
+                    <h4>Confiabilidad</h4>
+                    <p>Uptime: XX.X%<br>Manejo de errores robusto<br>Recuperación ante fallos</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Mejoras Futuras</h2>
+            <div class="content-box">
+                <h3>🚀 Roadmap de Desarrollo</h3>
+                <ul>
+                    <li><strong>SLAM (Simultaneous Localization and Mapping):</strong> Construcción de mapas en tiempo real</li>
+                    <li><strong>Aprendizaje por refuerzo:</strong> Optimización de comportamientos mediante RL</li>
+                    <li><strong>Multi-agente:</strong> Coordinación entre múltiples robots</li>
+                    <li><strong>Reconocimiento avanzado:</strong> Identificación de gestos y comandos de voz</li>
+                    <li><strong>Optimización energética:</strong> Algoritmos de gestión adaptativa de energía</li>
+                    <li><strong>Interfaz móvil:</strong> App para Android/iOS para control remoto</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="download-section">
+                <h2 style="color: #64b5f6; margin-bottom: 1.5rem;">📥 Código Fuente y Documentación</h2>
+                <p style="color: #b3d9ff; margin-bottom: 2rem; line-height: 1.8;">
+                    Descarga el código fuente completo, diagramas de flujo y documentación técnica del sistema de control
+                </p>
+                <a href="#" class="btn-download">💻 Código Fuente (GitHub)</a>
+                <a href="#" class="btn-download">📊 Diagramas de Control</a>
+                <a href="#" class="btn-download">📖 Documentación API</a>
+                <a href="#" class="btn-download">🎯 Manual de Configuración</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #90caf9;">
+            <strong>CARTMAN</strong> - Proyecto Universitario de Innovación Tecnológica
+        </p>
+        <p style="color: #b3d9ff;">
+            Desarrollado con pasión por estudiantes comprometidos con la tecnología del futuro
+        </p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
