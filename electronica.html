@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrónica - CARTMAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2f4a 100%);
+            color: #e0e7ff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+        }
+
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(25, 118, 210, 0.3) 100%);
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #64b5f6;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .content-box:hover {
+            border-color: #64b5f6;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+        }
+
+        .content-box h3 {
+            color: #90caf9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-box p {
+            line-height: 1.8;
+            color: #b3d9ff;
+            margin-bottom: 1rem;
+        }
+
+        .content-box ul {
+            margin-left: 2rem;
+            line-height: 1.8;
+            color: #b3d9ff;
+        }
+
+        .content-box ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .diagram-box {
+            width: 100%;
+            min-height: 400px;
+            background: rgba(25, 118, 210, 0.05);
+            border: 2px dashed rgba(66, 165, 245, 0.4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .diagram-box .icon {
+            font-size: 4rem;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .component-card {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 30px rgba(33, 150, 243, 0.3);
+        }
+
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .component-card h4 {
+            color: #90caf9;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .component-card p {
+            color: #b3d9ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: rgba(25, 118, 210, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .specs-table thead {
+            background: rgba(25, 118, 210, 0.2);
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(66, 165, 245, 0.2);
+        }
+
+        .specs-table th {
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .specs-table td {
+            color: #b3d9ff;
+        }
+
+        .specs-table tr:hover {
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .power-stat {
+            background: rgba(25, 118, 210, 0.15);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .power-stat:hover {
+            border-color: #64b5f6;
+            transform: translateY(-3px);
+        }
+
+        .power-stat .label {
+            color: #90caf9;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .power-stat .value {
+            color: #e3f2fd;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .pcb-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pcb-item {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .pcb-item:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.4);
+        }
+
+        .pcb-image {
+            width: 100%;
+            height: 250px;
+            background: rgba(25, 118, 210, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            font-size: 3rem;
+        }
+
+        .pcb-info {
+            padding: 1.5rem;
+            background: rgba(10, 25, 41, 0.6);
+        }
+
+        .pcb-info h4 {
+            color: #90caf9;
+            margin-bottom: 0.5rem;
+        }
+
+        .pcb-info p {
+            color: #b3d9ff;
+            font-size: 0.95rem;
+        }
+
+        .download-section {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            margin: 0.5rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.6);
+            border-color: #90caf9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid rgba(66, 165, 245, 0.3);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">CARTMAN</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link active">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">⚡ Sistema Electrónico</h1>
+        <p class="page-subtitle">
+            Diseño de circuitos, PCB personalizado y arquitectura electrónica del sistema CARTMAN
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="section-title">Introducción</h2>
+            <div class="content-box">
+                <p>
+                    El sistema electrónico de CARTMAN fue diseñado con un enfoque modular, integrando múltiples 
+                    subsistemas que trabajan en conjunto para proporcionar control, comunicación, procesamiento 
+                    de datos y gestión de energía de manera eficiente y confiable.
+                </p>
+                <p>
+                    Se utilizó un PCB personalizado diseñado en Altium Designer/KiCAD que integra todos los 
+                    componentes principales, reduciendo el cableado y mejorando la confiabilidad del sistema.
+                </p>
+            </div>
+        </section>
+
+        <!-- Arquitectura del Sistema -->
+        <section class="section">
+            <h2 class="section-title">Arquitectura del Sistema</h2>
+            <div class="diagram-box">
+                <div class="icon">🖥️</div>
+                <p>Diagrama de bloques del sistema electrónico</p>
+                <span style="font-size: 0.9rem; color: #b3d9ff;">Microcontrolador → Sensores → Actuadores → Comunicación</span>
+            </div>
+            <div class="content-box">
+                <h3>🔌 Componentes Principales</h3>
+                <ul>
+                    <li><strong>Unidad de Procesamiento:</strong> Microcontrolador de alto rendimiento</li>
+                    <li><strong>Sistema de Potencia:</strong> Reguladores de voltaje y gestión de baterías</li>
+                    <li><strong>Módulo de Comunicación:</strong> WiFi/Bluetooth para control remoto</li>
+                    <li><strong>Drivers de Motor:</strong> Puentes H para control de motores DC</li>
+                    <li><strong>Sensores:</strong> IMU, ultrasonido, encoders, cámara</li>
+                    <li><strong>Interfaces:</strong> USB, UART, I2C, SPI para expansión</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Componentes Electrónicos -->
+        <section class="section">
+            <h2 class="section-title">Componentes Electrónicos</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <span class="component-icon">🖥️</span>
+                    <h4>Microcontrolador Principal</h4>
+                    <p>ESP32 / STM32 / Arduino - Procesamiento central, control de periféricos y comunicación inalámbrica.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">⚙️</span>
+                    <h4>Driver de Motores</h4>
+                    <p>L298N / TB6612 - Control PWM de motores DC con protección contra sobrecorriente y cortocircuito.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔋</span>
+                    <h4>Sistema de Alimentación</h4>
+                    <p>Batería LiPo 3S/4S, BMS de protección, reguladores DC-DC (5V, 3.3V) de alta eficiencia.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">📡</span>
+                    <h4>Módulo de Comunicación</h4>
+                    <p>WiFi/Bluetooth integrado o módulo externo para telemetría y control remoto en tiempo real.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">📊</span>
+                    <h4>IMU - Sensor Inercial</h4>
+                    <p>MPU6050/9250 - Acelerómetro y giroscopio de 6/9 ejes para orientación y estabilización.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">📏</span>
+                    <h4>Sensores de Distancia</h4>
+                    <p>HC-SR04 ultrasónico / VL53L0X láser para detección de obstáculos y navegación autónoma.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🎥</span>
+                    <h4>Cámara</h4>
+                    <p>OV2640 / Raspberry Pi Camera para visión artificial y procesamiento de imágenes en tiempo real.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔄</span>
+                    <h4>Encoders</h4>
+                    <p>Encoders ópticos incrementales para medición precisa de velocidad y posición de las ruedas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Especificaciones Eléctricas -->
+        <section class="section">
+            <h2 class="section-title">Especificaciones Eléctricas</h2>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Parámetro</th>
+                        <th>Valor</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Voltaje de Batería</td>
+                        <td>11.1V - 14.8V (3S-4S LiPo)</td>
+                        <td>Con protección BMS</td>
+                    </tr>
+                    <tr>
+                        <td>Capacidad de Batería</td>
+                        <td>XXXX mAh</td>
+                        <td>Autonomía: X horas</td>
+                    </tr>
+                    <tr>
+                        <td>Consumo Promedio</td>
+                        <td>X.X A @ 12V</td>
+                        <td>En operación normal</td>
+                    </tr>
+                    <tr>
+                        <td>Consumo Máximo</td>
+                        <td>XX A @ 12V</td>
+                        <td>Todos los motores activos</td>
+                    </tr>
+                    <tr>
+                        <td>Voltaje Lógica</td>
+                        <td>3.3V / 5V</td>
+                        <td>Regulado y estabilizado</td>
+                    </tr>
+                    <tr>
+                        <td>Corriente por Motor</td>
+                        <td>X A continuo, X A pico</td>
+                        <td>Con limitación por software</td>
+                    </tr>
+                    <tr>
+                        <td>Frecuencia PWM</td>
+                        <td>XX kHz</td>
+                        <td>Control de motores</td>
+                    </tr>
+                    <tr>
+                        <td>Rango Temperatura</td>
+                        <td>-10°C a +50°C</td>
+                        <td>Operación garantizada</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Gestión de Energía -->
+        <section class="section">
+            <h2 class="section-title">Sistema de Gestión de Energía</h2>
+            <div class="content-box">
+                <h3>🔋 Distribución de Potencia</h3>
+                <p>
+                    El sistema utiliza una arquitectura de distribución de potencia escalonada con múltiples 
+                    reguladores para garantizar suministro estable a todos los subsistemas.
+                </p>
+            </div>
+            <div class="power-grid">
+                <div class="power-stat">
+                    <div class="label">Rail Principal</div>
+                    <div class="value">12V</div>
+                </div>
+                <div class="power-stat">
+                    <div class="label">Rail Motores</div>
+                    <div class="value">12V</div>
+                </div>
+                <div class="power-stat">
+                    <div class="label">Rail Lógica</div>
+                    <div class="value">5V</div>
+                </div>
+                <div class="power-stat">
+                    <div class="label">Rail MCU</div>
+                    <div class="value">3.3V</div>
+                </div>
+            </div>
+            <div class="content-box" style="margin-top: 2rem;">
+                <h3>⚡ Características de Protección</h3>
+                <ul>
+                    <li><strong>Protección contra sobrecorriente:</strong> Fusibles y limitación por hardware</li>
+                    <li><strong>Protección contra cortocircuito:</strong> Circuitos de detección y corte rápido</li>
+                    <li><strong>Protección contra inversión de polaridad:</strong> Diodos de protección</li>
+                    <li><strong>Monitoreo de voltaje de batería:</strong> Alerta de batería baja</li>
+                    <li><strong>Gestión térmica:</strong> Sensores de temperatura y throttling automático</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Diseño PCB -->
+        <section class="section">
+            <h2 class="section-title">Diseño de PCB</h2>
+            <div class="content-box">
+                <p>
+                    El PCB fue diseñado siguiendo las mejores prácticas de diseño electrónico, con especial 
+                    atención a la integridad de señal, distribución de potencia y gestión térmica.
+                </p>
+            </div>
+            <div class="pcb-images">
+                <div class="pcb-item">
+                    <div class="pcb-image">📋</div>
+                    <div class="pcb-info">
+                        <h4>Esquemático del Circuito</h4>
+                        <p>Diagrama completo mostrando todas las conexiones y componentes del sistema.</p>
+                    </div>
+                </div>
+                <div class="pcb-item">
+                    <div class="pcb-image">🔵</div>
+                    <div class="pcb-info">
+                        <h4>Layout PCB - Top Layer</h4>
+                        <p>Capa superior con componentes SMD y pistas de señal.</p>
+                    </div>
+                </div>
+                <div class="pcb-item">
+                    <div class="pcb-image">🔴</div>
+                    <div class="pcb-info">
+                        <h4>Layout PCB - Bottom Layer</h4>
+                        <p>Capa inferior con plano de tierra y pistas de potencia.</p>
+                    </div>
+                </div>
+                <div class="pcb-item">
+                    <div class="pcb-image">🎨</div>
+                    <div class="pcb-info">
+                        <h4>Render 3D del PCB</h4>
+                        <p>Vista tridimensional del PCB ensamblado con todos los componentes.</p>
+                    </div>
+                </div>
+                <div class="pcb-item">
+                    <div class="pcb-image">📸</div>
+                    <div class="pcb-info">
+                        <h4>PCB Fabricado</h4>
+                        <p>Fotografía del PCB real después de fabricación y ensamble.</p>
+                    </div>
+                </div>
+                <div class="pcb-item">
+                    <div class="pcb-image">✅</div>
+                    <div class="pcb-info">
+                        <h4>PCB en Operación</h4>
+                        <p>Sistema electrónico funcionando integrado en el prototipo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Características del PCB -->
+        <section class="section">
+            <h2 class="section-title">Especificaciones del PCB</h2>
+            <div class="content-box">
+                <h3>📐 Características Técnicas</h3>
+                <ul>
+                    <li><strong>Número de capas:</strong> 2 capas (Top y Bottom)</li>
+                    <li><strong>Dimensiones:</strong> XXX mm × XXX mm</li>
+                    <li><strong>Grosor del PCB:</strong> 1.6 mm</li>
+                    <li><strong>Grosor de cobre:</strong> 1 oz (35 μm)</li>
+                    <li><strong>Acabado superficial:</strong> HASL / ENIG</li>
+                    <li><strong>Color de máscara:</strong> Verde / Negro</li>
+                    <li><strong>Serigrafía:</strong> Blanca en ambas caras</li>
+                    <li><strong>Ancho mínimo de pista:</strong> 0.2 mm (señales) / 0.5 mm (potencia)</li>
+                    <li><strong>Espaciado mínimo:</strong> 0.2 mm</li>
+                    <li><strong>Vías:</strong> 0.3 mm diámetro interior, 0.6 mm pad</li>
+                </ul>
+            </div>
+            <div class="content-box">
+                <h3>🔧 Proceso de Fabricación</h3>
+                <ul>
+                    <li>Exportación de archivos Gerber desde software de diseño</li>
+                    <li>Verificación de DRC (Design Rule Check) antes de envío</li>
+                    <li>Fabricación por JLCPCB / PCBWay</li>
+                    <li>Inspección visual al recibir las placas</li>
+                    <li>Soldadura de componentes SMD y through-hole</li>
+                    <li>Pruebas eléctricas de continuidad y cortocircuitos</li>
+                    <li>Programación y configuración del microcontrolador</li>
+                    <li>Validación funcional de todos los subsistemas</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Comunicaciones -->
+        <section class="section">
+            <h2 class="section-title">Sistema de Comunicaciones</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <span class="component-icon">📡</span>
+                    <h4>WiFi</h4>
+                    <p>Comunicación de alta velocidad para transmisión de video y telemetría en tiempo real.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔵</span>
+                    <h4>Bluetooth</h4>
+                    <p>Control remoto de corto alcance y configuración del sistema mediante smartphone.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔗</span>
+                    <h4>UART / Serial</h4>
+                    <p>Comunicación con periféricos y debugging durante desarrollo y pruebas.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">⚡</span>
+                    <h4>I2C / SPI</h4>
+                    <p>Buses de comunicación para sensores y módulos de expansión del sistema.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sensores -->
+        <section class="section">
+            <h2 class="section-title">Array de Sensores</h2>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Sensor</th>
+                        <th>Modelo</th>
+                        <th>Función</th>
+                        <th>Interface</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IMU</td>
+                        <td>MPU6050/9250</td>
+                        <td>Orientación, aceleración, giroscopio</td>
+                        <td>I2C</td>
+                    </tr>
+                    <tr>
+                        <td>Ultrasonido</td>
+                        <td>HC-SR04</td>
+                        <td>Detección de obstáculos (4x)</td>
+                        <td>GPIO</td>
+                    </tr>
+                    <tr>
+                        <td>Encoder</td>
+                        <td>Óptico incremental</td>
+                        <td>Velocidad y posición de ruedas (4x)</td>
+                        <td>GPIO</td>
+                    </tr>
+                    <tr>
+                        <td>Cámara</td>
+                        <td>OV2640 / ESP32-CAM</td>
+                        <td>Visión artificial, streaming</td>
+                        <td>DCMI / SPI</td>
+                    </tr>
+                    <tr>
+                        <td>Sensor corriente</td>
+                        <td>ACS712 / INA219</td>
+                        <td>Monitoreo de consumo eléctrico</td>
+                        <td>Analógico / I2C</td>
+                    </tr>
+                    <tr>
+                        <td>Sensor voltaje</td>
+                        <td>Divisor resistivo</td>
+                        <td>Nivel de batería</td>
+                        <td>ADC</td>
+                    </tr>
+                    <tr>
+                        <td>Temperatura</td>
+                        <td>DS18B20 / DHT22</td>
+                        <td>Monitoreo térmico del sistema</td>
+                        <td>OneWire / GPIO</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Pruebas y Validación -->
+        <section class="section">
+            <h2 class="section-title">Pruebas y Validación</h2>
+            <div class="content-box">
+                <h3>✅ Protocolo de Pruebas</h3>
+                <ul>
+                    <li><strong>Inspección visual:</strong> Verificación de soldaduras y componentes correctos</li>
+                    <li><strong>Pruebas de continuidad:</strong> Multímetro para verificar conexiones</li>
+                    <li><strong>Pruebas de aislamiento:</strong> Verificar ausencia de cortocircuitos</li>
+                    <li><strong>Pruebas de alimentación:</strong> Validar voltajes de los reguladores</li>
+                    <li><strong>Programación del firmware:</strong> Carga de código y verificación básica</li>
+                    <li><strong>Pruebas funcionales por subsistema:</strong> Motores, sensores, comunicación</li>
+                    <li><strong>Integración completa:</strong> Validación del sistema operando en conjunto</li>
+                    <li><strong>Pruebas de estrés:</strong> Operación continua y casos límite</li>
+                </ul>
+            </div>
+            <div class="content-box">
+                <h3>📊 Resultados de Validación</h3>
+                <p>
+                    Todos los subsistemas pasaron satisfactoriamente las pruebas de validación. El sistema 
+                    opera de manera estable con eficiencia energética superior al 85% y comunicación confiable 
+                    en el rango especificado.
+                </p>
+            </div>
+        </section>
+
+        <!-- Lista de Componentes -->
+        <section class="section">
+            <h2 class="section-title">Lista de Materiales (BOM)</h2>
+            <div class="content-box">
+                <p style="margin-bottom: 1rem;">
+                    A continuación se presenta una lista resumida de los principales componentes electrónicos 
+                    utilizados en el proyecto. La BOM completa incluye referencias, cantidad, proveedores y costos.
+                </p>
+            </div>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Referencia</th>
+                        <th>Cantidad</th>
+                        <th>Proveedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Microcontrolador</td>
+                        <td>ESP32 / STM32F4</td>
+                        <td>1</td>
+                        <td>Digi-Key / Mouser</td>
+                    </tr>
+                    <tr>
+                        <td>Driver de Motor</td>
+                        <td>L298N / TB6612FNG</td>
+                        <td>2</td>
+                        <td>Amazon / AliExpress</td>
+                    </tr>
+                    <tr>
+                        <td>Regulador 5V</td>
+                        <td>LM2596 / XL4015</td>
+                        <td>2</td>
+                        <td>Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>Regulador 3.3V</td>
+                        <td>AMS1117-3.3</td>
+                        <td>1</td>
+                        <td>Digi-Key</td>
+                    </tr>
+                    <tr>
+                        <td>IMU</td>
+                        <td>MPU6050</td>
+                        <td>1</td>
+                        <td>Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>Sensor Ultrasonido</td>
+                        <td>HC-SR04</td>
+                        <td>4</td>
+                        <td>Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>Batería LiPo</td>
+                        <td>3S / 4S XXXX mAh</td>
+                        <td>1</td>
+                        <td>HobbyKing / Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>BMS</td>
+                        <td>3S/4S Balance Charger</td>
+                        <td>1</td>
+                        <td>Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>Conectores</td>
+                        <td>JST, XT60, Dupont</td>
+                        <td>Varios</td>
+                        <td>Amazon</td>
+                    </tr>
+                    <tr>
+                        <td>Resistencias/Capacitores</td>
+                        <td>SMD 0805 / Through-hole</td>
+                        <td>Varios</td>
+                        <td>Kit de componentes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Descargas -->
+        <section class="section">
+            <div class="download-section">
+                <h2 style="color: #64b5f6; margin-bottom: 1.5rem;">📥 Archivos de Diseño Electrónico</h2>
+                <p style="color: #b3d9ff; margin-bottom: 2rem; line-height: 1.8;">
+                    Descarga los esquemáticos, archivos Gerber, BOM completa y documentación técnica del sistema electrónico
+                </p>
+                <a href="#" class="btn-download">📋 Esquemáticos (PDF)</a>
+                <a href="#" class="btn-download">🔷 Archivos Gerber (ZIP)</a>
+                <a href="#" class="btn-download">📊 Lista de Materiales (Excel)</a>
+                <a href="#" class="btn-download">💾 Proyecto Altium/KiCAD</a>
+                <a href="#" class="btn-download">📖 Datasheet Compilado</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #90caf9;">
+            <strong>CARTMAN</strong> - Proyecto Universitario de Innovación Tecnológica
+        </p>
+        <p style="color: #b3d9ff;">
+            Desarrollado con pasión por estudiantes comprometidos con la tecnología del futuro
+        </p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
