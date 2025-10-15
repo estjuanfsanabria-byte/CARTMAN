@@ -18,6 +18,79 @@
             overflow-x: hidden;
         }
 
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         .hero {
             min-height: 100vh;
             display: flex;
@@ -28,6 +101,7 @@
             padding: 2rem;
             position: relative;
             background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+            margin-top: 80px;
         }
 
         .hero::before {
@@ -185,54 +259,6 @@
             color: #b3d9ff;
         }
 
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, #1976d2, #42a5f5);
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            display: flex;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .timeline-item:nth-child(odd) {
-            flex-direction: row-reverse;
-        }
-
-        .timeline-content {
-            width: 45%;
-            background: rgba(25, 118, 210, 0.15);
-            border: 2px solid rgba(66, 165, 245, 0.3);
-            border-radius: 15px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .timeline-dot {
-            width: 20px;
-            height: 20px;
-            background: #42a5f5;
-            border: 4px solid #0a1929;
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            box-shadow: 0 0 20px rgba(66, 165, 245, 0.6);
-        }
-
         .demo-section {
             background: rgba(25, 118, 210, 0.05);
             border-radius: 20px;
@@ -269,6 +295,28 @@
         }
 
         @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
             .logo {
                 font-size: 3rem;
                 letter-spacing: 0.2rem;
@@ -278,26 +326,35 @@
                 font-size: 1.2rem;
             }
 
-            .timeline::before {
-                left: 20px;
-            }
-
-            .timeline-item {
-                flex-direction: column !important;
-                padding-left: 50px;
-            }
-
-            .timeline-content {
-                width: 100%;
-            }
-
-            .timeline-dot {
-                left: 20px;
+            .hero {
+                margin-top: 80px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">CARTMAN</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link active">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
     <div class="hero">
         <div class="hero-content">
             <h1 class="logo">CARTMAN</h1>
@@ -351,83 +408,18 @@
         </section>
 
         <section class="section">
-            <h2 class="section-title">Desarrollo del Proyecto</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3 style="color: #64b5f6; margin-bottom: 1rem;">Fase 1: Conceptualización</h3>
-                        <p>Definición del problema, investigación de soluciones existentes y diseño conceptual del sistema.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3 style="color: #64b5f6; margin-bottom: 1rem;">Fase 2: Diseño CAD</h3>
-                        <p>Modelado 3D completo en SolidWorks, análisis de resistencia y optimización de componentes.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3 style="color: #64b5f6; margin-bottom: 1rem;">Fase 3: Prototipado</h3>
-                        <p>Construcción del primer prototipo, pruebas de concepto y ajustes de diseño iterativos.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3 style="color: #64b5f6; margin-bottom: 1rem;">Fase 4: Implementación</h3>
-                        <p>Integración de sistemas, programación de algoritmos y pruebas de funcionamiento completo.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Características Técnicas</h2>
-            <div class="cards">
-                <div class="card">
-                    <span class="card-icon">🖥️</span>
-                    <h3 class="card-title">Diseño PCB</h3>
-                    <p class="card-description">
-                        Placas de circuito impreso personalizadas con componentes de alta calidad y diseño optimizado.
-                    </p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">🤖</span>
-                    <h3 class="card-title">Sistemas de Control</h3>
-                    <p class="card-description">
-                        Algoritmos avanzados de control y navegación autónoma para operación precisa.
-                    </p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">📱</span>
-                    <h3 class="card-title">Interfaz de Usuario</h3>
-                    <p class="card-description">
-                        Aplicación de control manual desarrollada en Python con visualización en tiempo real.
-                    </p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">🧠</span>
-                    <h3 class="card-title">Visión Artificial</h3>
-                    <p class="card-description">
-                        Redes neuronales convolucionales para detección y análisis de entorno en tiempo real.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
             <div class="demo-section">
-                <h2 style="color: #64b5f6; margin-bottom: 2rem; font-size: 2rem;">Recursos y Documentación</h2>
+                <h2 style="color: #64b5f6; margin-bottom: 2rem; font-size: 2rem;">Explora el Proyecto</h2>
                 <p style="margin-bottom: 2rem; line-height: 1.8;">
-                    Explora nuestra documentación completa, diseños CAD, esquemas eléctricos y videos demostrativos del sistema CARTMAN en acción.
+                    Descubre cada etapa del desarrollo de CARTMAN, desde la conceptualización hasta el prototipo final.
                 </p>
-                <a href="#" class="btn">📄 Manual de Usuario</a>
-                <a href="#" class="btn">🎥 Video Demo</a>
-                <a href="#" class="btn">📊 Monografía</a>
-                <a href="#" class="btn">⚙️ Diseños CAD</a>
+                <a href="proceso-diseno.html" class="btn">📐 Proceso de Diseño</a>
+                <a href="prototipo-final.html" class="btn">🤖 Prototipo Final</a>
+                <a href="mecanica.html" class="btn">⚙️ Mecánica</a>
+                <a href="electronica.html" class="btn">⚡ Electrónica</a>
+                <a href="control.html" class="btn">🎮 Control</a>
+                <a href="manual-usuario.html" class="btn">📄 Manual de Usuario</a>
+                <a href="monografia.html" class="btn">📊 Monografía</a>
             </div>
         </section>
     </div>
@@ -442,6 +434,19 @@
     </footer>
 
     <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
