@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecánica - CARTMAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2f4a 100%);
+            color: #e0e7ff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(25, 118, 210, 0.3) 100%);
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #64b5f6;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .content-box:hover {
+            border-color: #64b5f6;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+        }
+
+        .content-box h3 {
+            color: #90caf9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-box p {
+            line-height: 1.8;
+            color: #b3d9ff;
+            margin-bottom: 1rem;
+        }
+
+        .content-box ul {
+            margin-left: 2rem;
+            line-height: 1.8;
+            color: #b3d9ff;
+        }
+
+        .content-box ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* CAD Images Grid */
+        .cad-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .cad-item {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cad-item:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.4);
+        }
+
+        .cad-image {
+            width: 100%;
+            height: 300px;
+            background: rgba(25, 118, 210, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            font-size: 3rem;
+        }
+
+        .cad-info {
+            padding: 1.5rem;
+            background: rgba(10, 25, 41, 0.6);
+        }
+
+        .cad-info h4 {
+            color: #90caf9;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .cad-info p {
+            color: #b3d9ff;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Components Grid */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-card {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            border-color: #64b5f6;
+            box-shadow: 0 15px 30px rgba(33, 150, 243, 0.3);
+        }
+
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .component-card h4 {
+            color: #90caf9;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .component-card p {
+            color: #b3d9ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Materials Table */
+        .materials-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: rgba(25, 118, 210, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .materials-table thead {
+            background: rgba(25, 118, 210, 0.3);
+        }
+
+        .materials-table th,
+        .materials-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(66, 165, 245, 0.2);
+        }
+
+        .materials-table th {
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .materials-table td {
+            color: #b3d9ff;
+        }
+
+        .materials-table tr:hover {
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        /* Analysis Section */
+        .analysis-box {
+            background: rgba(25, 118, 210, 0.08);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .analysis-box h4 {
+            color: #90caf9;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .analysis-stat {
+            background: rgba(25, 118, 210, 0.15);
+            padding: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(66, 165, 245, 0.2);
+        }
+
+        .analysis-stat .label {
+            color: #90caf9;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-stat .value {
+            color: #e3f2fd;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Download Button */
+        .download-section {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            margin: 0.5rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.6);
+            border-color: #90caf9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid rgba(66, 165, 245, 0.3);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .cad-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .materials-table {
+                font-size: 0.85rem;
+            }
+
+            .materials-table th,
+            .materials-table td {
+                padding: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">CARTMAN</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link active">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">⚙️ Diseño Mecánico</h1>
+        <p class="page-subtitle">
+            Análisis detallado del sistema mecánico, diseño estructural y componentes del prototipo CARTMAN
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introducción -->
+        <section class="section">
+            <h2 class="section-title">Introducción</h2>
+            <div class="content-box">
+                <p>
+                    El diseño mecánico de CARTMAN fue desarrollado utilizando SolidWorks, garantizando precisión 
+                    en cada componente y ensamble. El sistema está diseñado para ser robusto, eficiente y 
+                    fácil de mantener, utilizando materiales de alta calidad y técnicas de fabricación modernas.
+                </p>
+                <p>
+                    Cada pieza fue sometida a análisis de elementos finitos (FEA) para validar su resistencia 
+                    estructural y optimizar el uso de materiales, logrando un balance ideal entre peso y resistencia.
+                </p>
+            </div>
+        </section>
+
+        <!-- Diseño CAD -->
+        <section class="section">
+            <h2 class="section-title">Modelos CAD 3D</h2>
+            <div class="cad-grid">
+                <div class="cad-item">
+                    <div class="cad-image">🔧</div>
+                    <div class="cad-info">
+                        <h4>Vista Isométrica General</h4>
+                        <p>Modelo completo del ensamble mostrando todos los componentes integrados y sus relaciones espaciales.</p>
+                    </div>
+                </div>
+                <div class="cad-item">
+                    <div class="cad-image">🔩</div>
+                    <div class="cad-info">
+                        <h4>Chasis Principal</h4>
+                        <p>Estructura base de aluminio diseñada para máxima rigidez con mínimo peso, con análisis FEA validado.</p>
+                    </div>
+                </div>
+                <div class="cad-item">
+                    <div class="cad-image">⚙️</div>
+                    <div class="cad-info">
+                        <h4>Sistema de Transmisión</h4>
+                        <p>Conjunto de engranajes, ejes y acoples para transmisión eficiente de potencia a las ruedas.</p>
+                    </div>
+                </div>
+                <div class="cad-item">
+                    <div class="cad-image">🎯</div>
+                    <div class="cad-info">
+                        <h4>Sistema de Suspensión</h4>
+                        <p>Mecanismo de suspensión independiente que permite navegación en terrenos irregulares.</p>
+                    </div>
+                </div>
+                <div class="cad-item">
+                    <div class="cad-image">📦</div>
+                    <div class="cad-info">
+                        <h4>Compartimiento Electrónico</h4>
+                        <p>Carcasa protectora diseñada para alojar de forma segura toda la electrónica y baterías.</p>
+                    </div>
+                </div>
+                <div class="cad-item">
+                    <div class="cad-image">🔄</div>
+                    <div class="cad-info">
+                        <h4>Ensamble Explodido</h4>
+                        <p>Vista despiece que muestra la secuencia de montaje y relación entre todos los componentes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Componentes Principales -->
+        <section class="section">
+            <h2 class="section-title">Componentes Mecánicos Principales</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <span class="component-icon">🏗️</span>
+                    <h4>Chasis Estructural</h4>
+                    <p>Perfil de aluminio 6061-T6 con tratamiento térmico. Diseño optimizado mediante FEA.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🎡</span>
+                    <h4>Ruedas y Llantas</h4>
+                    <p>Ruedas de goma con núcleo de nylon reforzado. Diámetro optimizado para el terreno objetivo.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">⚙️</span>
+                    <h4>Tren de Transmisión</h4>
+                    <p>Engranajes de acero templado con relación de transmisión calculada para máxima eficiencia.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔩</span>
+                    <h4>Sistema de Fijación</h4>
+                    <p>Tornillería métrica grado 8.8, arandelas de seguridad y adhesivos estructurales Loctite.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🛡️</span>
+                    <h4>Carcasa Protectora</h4>
+                    <p>Policarbonato de 3mm con sellado IP54 para protección contra polvo y salpicaduras.</p>
+                </div>
+                <div class="component-card">
+                    <span class="component-icon">🔧</span>
+                    <h4>Soportes Modulares</h4>
+                    <p>Piezas impresas en 3D (PLA/ABS) y mecanizadas en aluminio para montaje de sensores.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Materiales -->
+        <section class="section">
+            <h2 class="section-title">Materiales Utilizados</h2>
+            <table class="materials-table">
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Componente</th>
+                        <th>Cantidad</th>
+                        <th>Propiedades Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aluminio 6061-T6</td>
+                        <td>Chasis principal</td>
+                        <td>1</td>
+                        <td>Alta resistencia/peso, fácil mecanizado</td>
+                    </tr>
+                    <tr>
+                        <td>Acero 1045</td>
+                        <td>Ejes de transmisión</td>
+                        <td>4</td>
+                        <td>Alta resistencia a torsión</td>
+                    </tr>
+                    <tr>
+                        <td>PLA / ABS</td>
+                        <td>Piezas impresas 3D</td>
+                        <td>15+</td>
+                        <td>Bajo costo, fabricación rápida</td>
+                    </tr>
+                    <tr>
+                        <td>Policarbonato</td>
+                        <td>Cubiertas protectoras</td>
+                        <td>3</td>
+                        <td>Transparente, alta resistencia impacto</td>
+                    </tr>
+                    <tr>
+                        <td>Nylon reforzado</td>
+                        <td>Engranajes</td>
+                        <td>8</td>
+                        <td>Bajo coeficiente fricción, resistente</td>
+                    </tr>
+                    <tr>
+                        <td>Rodamientos 608</td>
+                        <td>Sistema de rotación</td>
+                        <td>12</td>
+                        <td>Bajo mantenimiento, alta durabilidad</td>
+                    </tr>
+                    <tr>
+                        <td>Goma Shore 60A</td>
+                        <td>Neumáticos</td>
+                        <td>4</td>
+                        <td>Buena tracción y amortiguación</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Análisis Estructural -->
+        <section class="section">
+            <h2 class="section-title">Análisis por Elementos Finitos (FEA)</h2>
+            <div class="content-box">
+                <p>
+                    Se realizó un análisis exhaustivo de elementos finitos utilizando SolidWorks Simulation para 
+                    validar la integridad estructural del chasis y componentes críticos bajo diferentes condiciones 
+                    de carga.
+                </p>
+            </div>
+
+            <div class="analysis-box">
+                <h4>🔬 Resultados del Análisis de Esfuerzos</h4>
+                <div class="analysis-grid">
+                    <div class="analysis-stat">
+                        <div class="label">Esfuerzo Máximo</div>
+                        <div class="value">XX MPa</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Factor de Seguridad</div>
+                        <div class="value">X.X</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Deformación Máx.</div>
+                        <div class="value">X.XX mm</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Carga Aplicada</div>
+                        <div class="value">XX N</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 2rem;">
+                <div class="content-box">
+                    <h3>📊 Análisis de Von Mises</h3>
+                    <p>
+                        El análisis muestra que los esfuerzos máximos se concentran en las áreas de unión del 
+                        chasis, manteniéndose dentro de límites seguros con un factor de seguridad adecuado.
+                    </p>
+                    <div class="cad-image" style="margin-top: 1rem; height: 200px;">
+                        📈 Mapa de esfuerzos
+                    </div>
+                </div>
+                <div class="content-box">
+                    <h3>🎯 Análisis de Deformación</h3>
+                    <p>
+                        Las deformaciones totales están dentro del rango aceptable, garantizando que el sistema 
+                        mantendrá su rigidez estructural durante la operación normal.
+                    </p>
+                    <div class="cad-image" style="margin-top: 1rem; height: 200px;">
+                        📉 Mapa de deformaciones
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso de Fabricación -->
+        <section class="section">
+            <h2 class="section-title">Proceso de Fabricación</h2>
+            <div class="content-box">
+                <h3>🏭 Métodos de Manufactura</h3>
+                <ul>
+                    <li><strong>Impresión 3D FDM:</strong> Para prototipos rápidos y piezas de geometría compleja (soportes, carcasas)</li>
+                    <li><strong>Mecanizado CNC:</strong> Para componentes que requieren alta precisión (chasis, ejes)</li>
+                    <li><strong>Corte Láser:</strong> Para placas planas de aluminio y acrílico</li>
+                    <li><strong>Doblado de Lámina:</strong> Para componentes de chapa metálica</li>
+                    <li><strong>Ensamble Manual:</strong> Montaje final con herramientas especializadas</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>✅ Control de Calidad</h3>
+                <ul>
+                    <li>Verificación dimensional con calibrador digital (precisión ±0.01mm)</li>
+                    <li>Inspección visual de acabados superficiales</li>
+                    <li>Pruebas de ajuste y tolerancia entre componentes</li>
+                    <li>Verificación de torques de apriete según especificaciones</li>
+                    <li>Documentación fotográfica del proceso de ensamble</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Planos y Especificaciones -->
+        <section class="section">
+            <h2 class="section-title">Especificaciones Dimensionales</h2>
+            <div class="analysis-box">
+                <div class="analysis-grid">
+                    <div class="analysis-stat">
+                        <div class="label">Longitud Total</div>
+                        <div class="value">XXX mm</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Ancho Total</div>
+                        <div class="value">XXX mm</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Altura Total</div>
+                        <div class="value">XXX mm</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Peso Total</div>
+                        <div class="value">X.X kg</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Distancia Entre Ejes</div>
+                        <div class="value">XXX mm</div>
+                    </div>
+                    <div class="analysis-stat">
+                        <div class="label">Altura Libre</div>
+                        <div class="value">XX mm</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Descargas -->
+        <section class="section">
+            <div class="download-section">
+                <h2 style="color: #64b5f6; margin-bottom: 1.5rem;">📥 Archivos CAD y Documentación</h2>
+                <p style="color: #b3d9ff; margin-bottom: 2rem; line-height: 1.8;">
+                    Descarga los modelos 3D, planos técnicos y especificaciones completas del diseño mecánico
+                </p>
+                <a href="#" class="btn-download">📐 Archivos SolidWorks (.SLDPRT)</a>
+                <a href="#" class="btn-download">📄 Planos Técnicos (PDF)</a>
+                <a href="#" class="btn-download">🔧 Lista de Materiales (BOM)</a>
+                <a href="#" class="btn-download">📊 Reportes FEA</a>
+            </div>
+        </section
