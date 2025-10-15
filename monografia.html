@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monografía - CARTMAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2f4a 100%);
+            color: #e0e7ff;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #e3f2fd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .nav-link.active {
+            color: #64b5f6;
+            background: rgba(66, 165, 245, 0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64b5f6;
+            border-radius: 3px;
+        }
+
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(25, 118, 210, 0.3) 100%);
+            border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #bbdefb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .content-box {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .content-box p {
+            line-height: 1.8;
+            color: #b3d9ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 800px;
+            background: rgba(25, 118, 210, 0.05);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .pdf-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64b5f6;
+            gap: 1.5rem;
+        }
+
+        .pdf-placeholder .icon {
+            font-size: 5rem;
+        }
+
+        .pdf-placeholder p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            margin: 1rem 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.6);
+            border-color: #90caf9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid rgba(66, 165, 245, 0.3);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(10, 25, 41, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                padding: 2rem 0;
+                gap: 1rem;
+                border-bottom: 2px solid rgba(66, 165, 245, 0.3);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .pdf-container {
+                height: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">CARTMAN</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="proceso-diseno.html" class="nav-link">Proceso de Diseño</a></li>
+                <li><a href="prototipo-final.html" class="nav-link">Prototipo Final</a></li>
+                <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
+                <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
+                <li><a href="control.html" class="nav-link">Control</a></li>
+                <li><a href="manual-usuario.html" class="nav-link active">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">📄 Manual de Usuario</h1>
+        <p class="page-subtitle">
+            Guía completa de operación, mantenimiento y solución de problemas del sistema CARTMAN
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="content-box">
+            <p>
+                El manual de usuario contiene instrucciones detalladas para la instalación, configuración, 
+                operación y mantenimiento del sistema CARTMAN. Incluye especificaciones técnicas, 
+                procedimientos de seguridad y guía de solución de problemas.
+            </p>
+            <a href="ruta/al/manual_usuario.pdf" class="btn-download" download>📥 Descargar Manual (PDF)</a>
+        </div>
+
+        <!-- Visor de PDF embebido -->
+        <div class="pdf-container">
+            <!-- OPCIÓN 1: Placeholder - Reemplazar con el embed del PDF -->
+            <div class="pdf-placeholder">
+                <div class="icon">📄</div>
+                <p>Aquí se mostrará el Manual de Usuario en formato PDF</p>
+                <p style="font-size: 0.9rem; color: #90caf9;">
+                    Para insertar tu PDF, reemplaza este div con:<br>
+                    &lt;embed src="ruta/al/manual_usuario.pdf" type="application/pdf" width="100%" height="100%"&gt;
+                </p>
+            </div>
+
+            <!-- OPCIÓN 2: Descomentar cuando tengas el PDF -->
+            <!-- <embed src="ruta/al/manual_usuario.pdf" type="application/pdf" width="100%" height="100%"> -->
+        </div>
+
+        <div class="content-box">
+            <h3 style="color: #90caf9; margin-bottom: 1rem;">📋 Contenido del Manual</h3>
+            <p style="text-align: left; max-width: 600px; margin: 0 auto;">
+                • Introducción y especificaciones técnicas<br>
+                • Instalación y configuración inicial<br>
+                • Operación del sistema (manual y autónomo)<br>
+                • Interfaz de usuario y controles<br>
+                • Mantenimiento preventivo y correctivo<br>
+                • Solución de problemas comunes<br>
+                • Normas de seguridad<br>
+                • Contacto y soporte técnico
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #90caf9;">
+            <strong>CARTMAN</strong> - Proyecto Universitario de Innovación Tecnológica
+        </p>
+        <p style="color: #b3d9ff;">
+            Desarrollado con pasión por estudiantes comprometidos con la tecnología del futuro
+        </p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
