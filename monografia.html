@@ -136,6 +136,45 @@
             margin-bottom: 1.5rem;
         }
 
+        .content-box h3 {
+            color: #90caf9;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: rgba(25, 118, 210, 0.15);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            border-color: #64b5f6;
+        }
+
+        .stat-label {
+            color: #90caf9;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #e3f2fd;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
         .pdf-container {
             width: 100%;
             height: 800px;
@@ -186,6 +225,38 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(33, 150, 243, 0.6);
             border-color: #90caf9;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-card {
+            background: rgba(25, 118, 210, 0.1);
+            border: 2px solid rgba(66, 165, 245, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            border-color: #64b5f6;
+            transform: translateY(-3px);
+        }
+
+        .highlight-card h4 {
+            color: #90caf9;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-card p {
+            color: #b3d9ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         .footer {
@@ -240,8 +311,8 @@
                 <li><a href="mecanica.html" class="nav-link">Mecánica</a></li>
                 <li><a href="electronica.html" class="nav-link">Electrónica</a></li>
                 <li><a href="control.html" class="nav-link">Control</a></li>
-                <li><a href="manual-usuario.html" class="nav-link active">Manual de Usuario</a></li>
-                <li><a href="monografia.html" class="nav-link">Monografía</a></li>
+                <li><a href="manual-usuario.html" class="nav-link">Manual de Usuario</a></li>
+                <li><a href="monografia.html" class="nav-link active">Monografía</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -252,47 +323,102 @@
     </nav>
 
     <div class="page-header">
-        <h1 class="page-title">📄 Monografía</h1>
+        <h1 class="page-title">📊 Monografía del Proyecto</h1>
         <p class="page-subtitle">
-            Monografía CARTMAN
+            Documento técnico completo del desarrollo de CARTMAN - Robot Móvil Autónomo Transportador de Carga
         </p>
     </div>
 
     <div class="container">
         <div class="content-box">
+            <h3>Universidad Militar Nueva Granada</h3>
             <p>
-                La Monografía contiene todo el desarrollo del proyecto
+                Facultad de Ingeniería | Programa de Ingeniería Mecatrónica<br>
+                Bogotá D.C. 2025
             </p>
-            <a href="ruta/al/manual_usuario.pdf" class="btn-download" download>📥 Descargar Monografía (PDF)</a>
         </div>
 
-        <!-- Visor de PDF embebido -->
+        <div class="content-box">
+            <h3>📋 Resumen Ejecutivo</h3>
+            <p style="text-align: justify; max-width: 900px; margin: 0 auto;">
+                Robot móvil autónomo con capacidad de transporte de 5 kg, navegación autónoma mediante 
+                control PID (Kp=1.5, Ki=0.5, Kd=0.1), arquitectura distribuida con dos ESP32, y sistema 
+                de sensores integrado (magnetómetro QMC5883L, IMU MPU6050, encoders 1440 PPR). 
+                Recorrido validado: 150 metros con error de trayectoria ±1.4 cm y autonomía de 115 minutos.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-label">Capacidad de Carga</div>
+                <div class="stat-value">5 kg</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Autonomía</div>
+                <div class="stat-value">115 min</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Error Navegación</div>
+                <div class="stat-value">±1.4 cm</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Factor Seguridad</div>
+                <div class="stat-value">99×</div>
+            </div>
+        </div>
+
+        <div class="highlights">
+            <div class="highlight-card">
+                <h4>🎯 Objetivo Cumplido</h4>
+                <p>Transporte autónomo de 5 kg en trayecto de 150 metros del laboratorio de automatización a la entrada del bloque C.</p>
+            </div>
+            <div class="highlight-card">
+                <h4>⚙️ Control PID Optimizado</h4>
+                <p>Tiempo de asentamiento 0.8s, error < 0.3°, con anti-windup (límite integral = 1000).</p>
+            </div>
+            <div class="highlight-card">
+                <h4>📡 Arquitectura Distribuida</h4>
+                <p>Dos ESP32 en comunicación UART 115200 baud, latencia < 50 ms, pérdida de datos 0%.</p>
+            </div>
+            <div class="highlight-card">
+                <h4>🔬 Validación FEA</h4>
+                <p>Análisis estructural con factor de seguridad 99×, desplazamientos < 0.5 mm bajo carga.</p>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <a href="documentos/monografia.pdf" class="btn-download" download>📥 Descargar Monografía Completa (PDF)</a>
+        </div>
+
         <div class="pdf-container">
-            <!-- OPCIÓN 1: Placeholder - Reemplazar con el embed del PDF -->
+            <!-- OPCIÓN 1: Placeholder -->
             <div class="pdf-placeholder">
                 <div class="icon">📄</div>
-                <p>Aquí se mostrará la Monografía en formato PDF</p>
+                <p>Monografía completa del proyecto CARTMAN</p>
                 <p style="font-size: 0.9rem; color: #90caf9;">
-                    Para insertar tu PDF, reemplaza este div con:<br>
-                    &lt;embed src="ruta/al/manual_usuario.pdf" type="application/pdf" width="100%" height="100%"&gt;
+                    Para visualizar el PDF, reemplaza este div con:<br>
+                    &lt;embed src="imagenes/monografia.pdf" type="application/pdf" width="100%" height="100%"&gt;
                 </p>
             </div>
 
             <!-- OPCIÓN 2: Descomentar cuando tengas el PDF -->
-            <!-- <embed src="ruta/al/manual_usuario.pdf" type="application/pdf" width="100%" height="100%"> -->
+            <!-- <embed src="documentos/monografia.pdf" type="application/pdf" width="100%" height="100%"> -->
         </div>
 
         <div class="content-box">
-            <h3 style="color: #90caf9; margin-bottom: 1rem;">📋 Contenido de la Monografía</h3>
-            <p style="text-align: left; max-width: 600px; margin: 0 auto;">
-                • Introducción y especificaciones técnicas<br>
-                • Instalación y configuración inicial<br>
-                • Operación del sistema (manual y autónomo)<br>
-                • Interfaz de usuario y controles<br>
-                • Mantenimiento preventivo y correctivo<br>
-                • Solución de problemas comunes<br>
-                • Normas de seguridad<br>
-                • Contacto y soporte técnico
+            <h3>📚 Contenido de la Monografía</h3>
+            <p style="text-align: left; max-width: 700px; margin: 0 auto; line-height: 2;">
+                1. Glosario y Resumen Ejecutivo<br>
+                2. Introducción y Definición del Problema<br>
+                3. Diseño Conceptual (Casa de Calidad, Encuestas, Análisis de Mercado)<br>
+                4. Desarrollo de Prototipos y Matriz de Selección<br>
+                5. Diseño a Detalle (Modelos Cinemático y Dinámico)<br>
+                6. Análisis Estructural FEA (von Mises, Desplazamientos, Factor Seguridad)<br>
+                7. Construcción y Ensamblaje del Sistema<br>
+                8. Pruebas Experimentales y Validación<br>
+                9. Análisis de Resultados y Rendimiento<br>
+                10. Conclusiones y Recomendaciones Futuras<br>
+                11. Anexos (Código, Esquemas, Diseños CAD)
             </p>
         </div>
     </div>
